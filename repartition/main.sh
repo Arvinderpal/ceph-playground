@@ -3,6 +3,7 @@
 set -ex
 
 source delete-osd.sh
+source partition.sh
 
 NAMESPACE="gitops-platform-storage"
 ROOK_TOOLBOX="rook-ceph-tools-unknown"
