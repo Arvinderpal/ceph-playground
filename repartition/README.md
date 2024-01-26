@@ -1,0 +1,1 @@
+# scripts to repartition an existing partition that has a ceph osd on it. 
