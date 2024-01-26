@@ -36,5 +36,10 @@ deletepurgejob() {
 }
 
 clean_host() {
+    save_dir=$(pwd)
+    cd $ANSIBLE_REPO_PATH
+
     ansible-playbook -i $ANSIBLE_REPO_PATH/inventory/$CLUSTER/hosts.yml $ANSIBLE_REPO_PATH/playbooks/rook-ceph.yml -t rook-clean -l $NODE_NAME --check
+
+    cd $save_dir
 }
