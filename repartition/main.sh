@@ -8,7 +8,9 @@ NAMESPACE="gitops-platform-storage"
 ROOK_TOOLBOX="rook-ceph-tools-unknown"
 
 # Define NODE_NAME variable with default value
-NODE_NAME="no-node-specified"
+if [ -z "$NODE_NAME" ]; then
+    NODE_NAME="no-node-specified"
+fi
 
 # Check if NODE_NAME has been overridden by the user
 if [ "$NODE_NAME" = "no-node-specified" ]; then
