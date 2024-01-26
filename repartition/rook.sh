@@ -1,21 +1,32 @@
 #!/bin/bash
 
 stop_rookoperator() {
-    kubectl -n rook-ceph scale deployment rook-ceph-operator --replicas=0
+    kubectl -n $NAMESPACE scale deployment rook-ceph-operator --replicas=0
 }
     
 start_rookoperator() {
-    kubectl -n rook-ceph scale deployment rook-ceph-operator --replicas=1
+    kubectl -n $NAMESPACE scale deployment rook-ceph-operator --replicas=1
 }
 
 findosd() {
-    NODE_NAME=$1
-    # Find OSD on the specified node
-    OSD_NAME="osd1" # Replace with the actual OSD name
-    OSD_ID="0" # Replace with the actual OSD ID
+    OSD_POD=$(kubectl get pods -n $NAMESPACE -l app=rook-ceph-osd -o jsonpath="{.items[?(@.spec.nodeName=='$NODE_NAME')].metadata.name}")
+    OSD_ID=$(kubectl get pod -n $NAMESPACE $OSD_POD -o jsonpath="{.metadata.labels['ceph-osd-id']}")
+    OSD_NAME="osd.$OSD_ID"
+
+    if [ -z "$NODE_NAME" ] || [ -z "$OSD_POD" ] || [ -z "$OSD_NAME" ]; then
+        echo "One or more variables are empty. Exiting script."
+        exit 1
+    fi
+
+    echo "OSD pod running on $NODE_NAME: $OSD_POD: $OSD_NAME"
 }
 
 findrooktoolbox() {
-    ROOK_TOOLBOX=$(kubectl get pods -n rook-ceph | grep "^rook-ceph-tools" | awk '{print $1}')
+    ROOK_TOOLBOX=$(kubectl get pods -n $NAMESPACE | grep "^rook-ceph-tools" | awk '{print $1}')
+    if [ -z "$ROOK_TOOLBOX" ]; then
+        echo "ROOK_TOOLBOX is empty. Exiting script."
+        exit 1
+    fi
 }
+
 

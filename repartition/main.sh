@@ -1,4 +1,6 @@
 #!/bin/bash
+# enable debug mode
+set -x
 
 source delete-osd.sh
 

@@ -7,18 +7,31 @@ delete_osd() {
 
     stop_rookoperator
 
+    read -p "Press Enter to continue..."
     findosd $NODE_NAME
-    echo $OSD_NAME
-    echo $$OSD_ID
 
     findrooktoolbox
     echo $ROOK_TOOLBOX
-    
+
+    read -p "Press Enter to continue..."
+    findosd $NODE_NAME
+
     markosddown
+    
+    read -p "Press Enter to continue..."
+    findosd $NODE_NAME
 
     create_osd_purge_job
 
+    read -p "Press Enter to continue..."
+    findosd $NODE_NAME
+
     runpurgejob
+
+    read -p "Press Enter to continue..."
+    findosd $NODE_NAME
+    
+    deletepurgejob
 }
 
 markosddown() {
@@ -35,4 +48,8 @@ runpurgejob() {
     echo "waiting for purge job to complete"
     wait_for_job_completion
     echo "purge job completed"
+}
+
+deletepurgejob() {
+    kubectl delete -f out/osd-purge-job-osd-$OSD_ID.yaml
 }
