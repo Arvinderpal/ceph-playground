@@ -14,5 +14,5 @@ create_osd_purge_job() {
 
     # Write the substituted content to a new file
     output_file="out/osd-purge-job-osd-$OSD_ID.yaml"
-    # echo "$substituted_content" > "$output_file"
+    echo "$substituted_content" > "$output_file"
 }

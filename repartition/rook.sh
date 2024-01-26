@@ -11,11 +11,6 @@ start_rookoperator() {
 findosd() {
     OSD_POD=$(kubectl get pods -n $NAMESPACE -l app=rook-ceph-osd -o jsonpath="{.items[?(@.spec.nodeName=='$NODE_NAME')].metadata.name}")
 
-    if [ -z "$OSD_POD" ]; then
-        echo "OSD pod not found. Exiting script."
-        return
-    fi
-
     OSD_ID=$(kubectl get pod -n $NAMESPACE $OSD_POD -o jsonpath="{.metadata.labels['ceph-osd-id']}")
     OSD_NAME="osd.$OSD_ID"
     echo "OSD pod running on $NODE_NAME: $OSD_POD: $OSD_NAME"
