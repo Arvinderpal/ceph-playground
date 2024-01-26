@@ -36,5 +36,5 @@ deletepurgejob() {
 }
 
 clean_host() {
-    ansible-playbook -i $ANSIBLE_REPO_PATH/inventory/$CLUSTER/hosts.yml playbooks/rook-ceph.yml -t rook-clean -l $NODE_NAME --check
+    ansible-playbook -i $ANSIBLE_REPO_PATH/inventory/$CLUSTER/hosts.yml $ANSIBLE_REPO_PATH/playbooks/rook-ceph.yml -t rook-clean -l $NODE_NAME --check
 }
