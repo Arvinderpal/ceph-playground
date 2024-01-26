@@ -18,11 +18,23 @@ if [ "$NODE_NAME" = "no-node-specified" ]; then
     exit 1
 fi
 
-# 1. delete osd
+# 1. delete osd(s)
 # 2. clean host (ansible)
 # 3. repartition
 # 4. start_rookoperator
 
-delete_osd $NODE_NAME
+findrooktoolbox
+echo $ROOK_TOOLBOX
+read -p "Press Enter to continue..."
 
-# start_rookoperator
+stop_rookoperator
+read -p "Press Enter to continue..."
+
+while true; do
+    findosd $NODE_NAME
+    if [ -z "$OSD_POD" ]; then
+        break
+    fi
+    
+    delete_osd $NODE_NAME
+done
