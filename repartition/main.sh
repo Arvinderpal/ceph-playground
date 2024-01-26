@@ -1,6 +1,6 @@
 #!/bin/bash
-# enable debug mode
-set -x
+# enable debug mode and exit on error
+set -ex
 
 source delete-osd.sh
 
@@ -18,6 +18,19 @@ if [ "$NODE_NAME" = "no-node-specified" ]; then
     exit 1
 fi
 
+# Check if CLUSTER is specified
+if [ -z "$CLUSTER" ]; then
+    echo "Error: CLUSTER not specified. Please provide a value for CLUSTER."
+    exit 1
+fi
+
+# Check if ANSIBLE_REPO_PATH is specified
+if [ -z "$ANSIBLE_REPO_PATH" ]; then
+    echo "Error: ANSIBLE_REPO_PATH not specified. Please provide a value for ANSIBLE_REPO_PATH."
+    exit 1
+fi
+
+
 # 1. delete osd(s)
 # 2. clean host (ansible)
 # 3. repartition
@@ -32,7 +45,9 @@ while true; do
     if [ -z "$OSD_POD" ]; then
         break
     fi
-    
     delete_osd $NODE_NAME
 done
+
+read -p "Ready to clean host...Press Enter to continue..."
+clean_host $NODE_NAME
 

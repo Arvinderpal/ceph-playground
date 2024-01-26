@@ -8,10 +8,9 @@ delete_osd() {
     markosddown
 
     create_osd_purge_job
-    read -p "Press Enter to continue..."
+    read -p "Ready to run purge job...Press Enter to continue..."
 
     runpurgejob
-
 
     deletepurgejob
 }
@@ -34,4 +33,8 @@ runpurgejob() {
 
 deletepurgejob() {
     kubectl delete -f out/osd-purge-job-osd-$OSD_ID.yaml
+}
+
+clean_host() {
+    ansible-playbook -i $ANSIBLE_REPO_PATH/inventory/$CLUSTER/hosts.yml playbooks/rook-ceph.yml -t rook-clean -l $NODE_NAME --check
 }
