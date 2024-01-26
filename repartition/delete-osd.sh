@@ -6,13 +6,12 @@ source create-osd-purge-job.sh
 delete_osd() {
 
     markosddown
-    read -p "Press Enter to continue..."
 
     create_osd_purge_job
     read -p "Press Enter to continue..."
 
     runpurgejob
-    read -p "Press Enter to continue..."
+
 
     deletepurgejob
 }

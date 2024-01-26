@@ -24,11 +24,8 @@ fi
 # 4. start_rookoperator
 
 findrooktoolbox
-echo $ROOK_TOOLBOX
-read -p "Press Enter to continue..."
 
 stop_rookoperator
-read -p "Press Enter to continue..."
 
 while true; do
     findosd $NODE_NAME
@@ -38,3 +35,4 @@ while true; do
     
     delete_osd $NODE_NAME
 done
+

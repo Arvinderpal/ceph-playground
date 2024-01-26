@@ -25,7 +25,7 @@ spec:
       labels:
         app: rook-ceph-purge-osd-<OSD-IDs>
     spec:
-      serviceAccountName: rook-ceph-purge-osd-<OSD-IDs>
+      serviceAccountName: rook-ceph-purge-osd
       containers:
         - name: osd-removal
           image: rook/ceph:v1.9.13
