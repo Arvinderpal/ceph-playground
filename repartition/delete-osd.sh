@@ -25,7 +25,9 @@ wait_for_job_completion() {
 }
 
 runpurgejob() {
+    set +e
     deletepurgejob # delete job if it already exists
+    set -e
     kubectl apply -f out/osd-purge-job-osd-$OSD_ID.yaml
     echo "waiting for purge job to complete"
     wait_for_job_completion
