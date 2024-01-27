@@ -14,7 +14,9 @@ delete_osd() {
 
     deletepurgejob
 
+    set +e
     removeosdauth
+    set -e
 }
 
 markosddown() {
@@ -32,9 +34,9 @@ runpurgejob() {
     set -e
     kubectl apply -f out/osd-purge-job-osd-$OSD_ID.yaml
     echo "waiting for purge job to complete"
-    sleep 10
-    # wait_for_job_completion
-    # echo "purge job completed"
+    sleep 30
+    wait_for_job_completion
+    echo "purge job completed"
 }
 
 removeosdauth() {
