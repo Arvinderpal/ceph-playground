@@ -21,10 +21,11 @@ markosddown() {
 }
 
 wait_for_job_completion() {
-    kubectl wait --for=condition=complete job/osd-purge-job-osd-$OSD_ID -n $NAMESPACE
+    kubectl wait --for=condition=complete job/rook-ceph-purge-osd-$OSD_ID -n $NAMESPACE
 }
 
 runpurgejob() {
+    deletepurgejob # delete job if it already exists
     kubectl apply -f out/osd-purge-job-osd-$OSD_ID.yaml
     echo "waiting for purge job to complete"
     wait_for_job_completion
