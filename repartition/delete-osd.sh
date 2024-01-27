@@ -15,6 +15,7 @@ delete_osd() {
     deletepurgejob
 
     set +e
+    deletedeployment
     removeosdauth
     set -e
 }
@@ -43,6 +44,10 @@ runpurgejob() {
 
 removeosdauth() {
     kubectl exec -it -n $NAMESPACE $ROOK_TOOLBOX -- ceph auth del $OSD_NAME
+}
+
+deletedeployment() {
+    kubectl -n $NAMESPACE delete deployment rook-ceph-osd-$OSD_ID
 }
 
 deletepurgejob() {
