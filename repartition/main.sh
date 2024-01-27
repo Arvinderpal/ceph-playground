@@ -47,19 +47,15 @@ fi
 # 2. clean host (ansible)
 # 3. repartition
 # 4. start_rookoperator
+# 5. wait for osd(s) to come back up
 
 findrooktoolbox
 
 stop_rookoperator
 
-# NB: this is meant to support mulitple OSDs on the same node but the other parts of this script are only meant for nvme0n1p4 partitions. Additional work is required to support disks instead of just a singl partition.
-while true; do
-    findosd $NODE_NAME
-    if [ -z "$OSD_POD" ]; then
-        break
-    fi
-    delete_osd $NODE_NAME
-done
+# NB: additional work is required to support multiple OSDs and disks or partitions other than nvme4n1p4.
+findosd $NODE_NAME
+delete_osd $NODE_NAME
 
 read -p "Ready to clean host...Press Enter to continue..."
 clean_host $NODE_NAME
@@ -68,3 +64,6 @@ shrink_partition $NODE_NAME
 
 read -p "Ready to restart rook-operator...Press Enter to continue..."
 start_rookoperator
+
+# wait for osds to come back up
+# ...

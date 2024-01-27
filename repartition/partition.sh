@@ -12,7 +12,4 @@ shrink_partition() {
     MIDPOINT=$((($START + $END) / 2))
     ssh root@$NODE_IP "echo yes | parted $DEVICE ---pretend-input-tty resizepart 4 ${MIDPOINT}GB"
     ssh root@$NODE_IP "parted $DEVICE mkpart primary ext4 ${MIDPOINT}GB 100%"
-        
-    }
-
-
+   }
