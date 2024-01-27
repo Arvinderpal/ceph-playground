@@ -35,7 +35,7 @@ runpurgejob() {
     set -e
     kubectl apply -f out/osd-purge-job-osd-$OSD_ID.yaml
     echo "waiting for purge job to complete"
-    sleep 30
+    sleep 10
     set +e
     wait_for_job_completion
     set -e
