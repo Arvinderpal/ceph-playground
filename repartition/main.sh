@@ -60,7 +60,12 @@ delete_osd $NODE_NAME
 read -p "Ready to clean host...Press Enter to continue..."
 clean_host $NODE_NAME
 
-shrink_partition $NODE_NAME
+
+read -p "Do you want to shrink the partition? (y/n): " shrink_choice
+
+if [ "$shrink_choice" = "y" ]; then
+    shrink_partition $NODE_NAME
+fi
 
 read -p "Ready to restart rook-operator...Press Enter to continue..."
 start_rookoperator
