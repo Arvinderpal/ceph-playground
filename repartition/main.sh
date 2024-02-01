@@ -53,17 +53,26 @@ findrooktoolbox
 
 stop_rookoperator
 
+
 # NB: additional work is required to support multiple OSDs and disks or partitions other than nvme4n1p4.
-findosd $NODE_NAME
-delete_osd $NODE_NAME
 
-read -p "Ready to clean host...Press Enter to continue..."
-clean_host $NODE_NAME
+read -p "Skip findosd and delete_osd? (y): " skip_choice
+
+if [ "$skip_choice" != "y" ]; then
+    findosd $NODE_NAME
+    delete_osd $NODE_NAME
+fi
+
+read -p "Skip clean_host? (y): " clean_host_choice
+
+if [ "$clean_host_choice" != "y" ]; then
+    clean_host $NODE_NAME
+fi
 
 
-read -p "Do you want to shrink the partition? (y/n): " shrink_choice
+read -p "Skip shrink_partition? (y): " shrink_choice
 
-if [ "$shrink_choice" = "y" ]; then
+if [ "$shrink_choice" != "y" ]; then
     shrink_partition $NODE_NAME
 fi
 
