@@ -49,34 +49,39 @@ fi
 # 4. start_rookoperator
 # 5. wait for osd(s) to come back up
 
-# Check if --no-skip parameter is passed
-if [[ "$1" == "--no-skip" ]]; then
-    skip_choice="n"
-    clean_host_choice="n"
-    shrink_choice="n"
-fi
-
 findrooktoolbox
 
 stop_rookoperator
 
 # NB: additional work is required to support multiple OSDs and disks or partitions other than nvme4n1p4.
 
-read -p "Skip findosd and delete_osd? (y): " skip_choice
+if [[ "$1" == "--no-skip" ]]; then
+    skip_choice="n"
+else
+    read -p "Skip findosd and delete_osd? (y): " skip_choice
+fi
 
 if [ "$skip_choice" != "y" ]; then
     findosd $NODE_NAME
     delete_osd $NODE_NAME
 fi
 
-read -p "Skip clean_host? (y): " clean_host_choice
+if [[ "$1" == "--no-skip" ]]; then
+    clean_host_choice="n"
+else
+    read -p "Skip clean_host? (y): " clean_host_choice
+fi
 
 if [ "$clean_host_choice" != "y" ]; then
     clean_host $NODE_NAME
 fi
 
 
-read -p "Skip shrink_partition? (y): " shrink_choice
+if [[ "$1" == "--no-skip" ]]; then
+    shrink_choice="n"
+else
+    read -p "Skip shrink_partition? (y): " shrink_choice
+fi
 
 if [ "$shrink_choice" != "y" ]; then
     shrink_partition $NODE_NAME
