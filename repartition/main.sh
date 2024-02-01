@@ -49,10 +49,16 @@ fi
 # 4. start_rookoperator
 # 5. wait for osd(s) to come back up
 
+# Check if --no-skip parameter is passed
+if [[ "$1" == "--no-skip" ]]; then
+    skip_choice="n"
+    clean_host_choice="n"
+    shrink_choice="n"
+fi
+
 findrooktoolbox
 
 stop_rookoperator
-
 
 # NB: additional work is required to support multiple OSDs and disks or partitions other than nvme4n1p4.
 
