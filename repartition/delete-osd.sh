@@ -8,7 +8,6 @@ delete_osd() {
     markosddown
 
     create_osd_purge_job
-    read -p "Ready to run purge job...Press Enter to continue..."
 
     runpurgejob
 

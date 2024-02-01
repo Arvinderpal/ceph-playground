@@ -87,8 +87,15 @@ if [ "$shrink_choice" != "y" ]; then
     shrink_partition $NODE_NAME
 fi
 
-read -p "Ready to restart rook-operator...Press Enter to continue..."
-start_rookoperator
+if [[ "$1" == "--no-skip" ]]; then
+    start_choice="n"
+else
+    read -p "Skip start_rookoperator? (y): " start_choice
+fi
+
+if [ "$start_choice" != "y" ]; then
+    start_rookoperator 
+fi
 
 # wait for osds to come back up
 # ...
