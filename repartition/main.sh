@@ -43,6 +43,8 @@ if [[ "$CEPH_PARTITION_NUMBER" != "4" ]]; then
     exit 1
 fi
 
+
+
 # 1. delete osd(s)
 # 2. clean host (ansible)
 # 3. repartition
@@ -53,44 +55,43 @@ findrooktoolbox
 
 stop_rookoperator
 
-# NB: additional work is required to support multiple OSDs and disks or partitions other than nvme4n1p4.
+skip_choice="n"
+clean_host_choice="n"
+shrink_choice="n"
+start_choice="n"
 
-if [[ "$1" == "--no-skip" ]]; then
-    skip_choice="n"
-else
-    read -p "Skip findosd and delete_osd? (y): " skip_choice
-fi
+for arg in "$@"
+do
+    case $arg in
+        --skip-delete-osd)
+            skip_choice="y"
+            ;;
+        --skip-host-cleanup)
+            clean_host_choice="y"
+            ;;
+        --skip-repartition)
+            shrink_choice="y"
+            ;;
+        --skip-start-rook)
+            start_choice="y"
+            ;;
+        *)
+            # Unknown flag, do nothing
+            ;;
+    esac
+done
 
 if [ "$skip_choice" != "y" ]; then
     findosd $NODE_NAME
     delete_osd $NODE_NAME
 fi
 
-if [[ "$1" == "--no-skip" ]]; then
-    clean_host_choice="n"
-else
-    read -p "Skip clean_host? (y): " clean_host_choice
-fi
-
 if [ "$clean_host_choice" != "y" ]; then
     clean_host $NODE_NAME
 fi
 
-
-if [[ "$1" == "--no-skip" ]]; then
-    shrink_choice="n"
-else
-    read -p "Skip shrink_partition? (y): " shrink_choice
-fi
-
 if [ "$shrink_choice" != "y" ]; then
     shrink_partition $NODE_NAME
-fi
-
-if [[ "$1" == "--no-skip" ]]; then
-    start_choice="n"
-else
-    read -p "Skip start_rookoperator? (y): " start_choice
 fi
 
 if [ "$start_choice" != "y" ]; then
