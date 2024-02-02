@@ -22,4 +22,5 @@ do
     export CEPH_PARTITION_NUMBER=4
     export NODE_NAME="$node_name"
     ./main.sh
+    sleep 600
 done
